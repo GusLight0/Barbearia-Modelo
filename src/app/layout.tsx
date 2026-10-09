@@ -21,8 +21,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${cinzel.variable} ${inter.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#0B0B0C] text-[#F5F3EF]">{children}</body>
+    <html lang="pt-BR" data-scroll-behavior="smooth" className={`${cinzel.variable} ${inter.variable} h-full antialiased`}>
+      <body suppressHydrationWarning className="min-h-full bg-[#0B0B0C] text-[#F5F3EF]">
+        {children}
+      </body>
     </html>
   );
 }

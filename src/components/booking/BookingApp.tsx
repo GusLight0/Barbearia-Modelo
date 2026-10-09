@@ -40,6 +40,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useScrollReveal } from "@/components/ScrollRevealObserver";
 import {
   defaultAdminSession,
   defaultServices,
@@ -95,6 +96,8 @@ type BookingStep = "date" | "time" | "details" | "confirmed" | null;
 type AdminSection = "agenda" | "management" | "settings" | "analytics";
 
 export function BookingApp({ view }: { view?: AppView }) {
+  useScrollReveal();
+
   const [services, setServices] = useState<Service[]>(defaultServices);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [settings, setSettings] = useState<BusinessSettings>(defaultSettings);
@@ -976,20 +979,20 @@ export function BookingApp({ view }: { view?: AppView }) {
         <section className="w-full overflow-hidden">
           <div className="relative grid grid-rows-[auto_280px] min-[640px]:grid-rows-[auto_220px] lg:h-[500px] lg:grid-cols-[1.05fr_0.95fr] lg:grid-rows-1">
             <div className="flex flex-col justify-center p-6 sm:p-8 lg:py-10 lg:px-8">
-              <div className="hero-copy-content mx-auto w-full max-w-[520px] lg:!left-8">
-              <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-[#C6A56B]/40 bg-[#C6A56B]/10 px-3 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[#C6A56B]">
+              <div data-reveal-stagger className="hero-copy-content mx-auto w-full max-w-[520px] lg:!left-8">
+              <div data-reveal className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-[#C6A56B]/40 bg-[#C6A56B]/10 px-3 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[#C6A56B]">
                 <Sparkles className="h-3.5 w-3.5" />
                 Barber studio premium
               </div>
 
-              <h1 className="max-w-xl text-5xl font-semibold leading-none tracking-[-0.06em] text-[#F5F3EF] sm:text-6xl lg:text-7xl">
+              <h1 data-reveal className="max-w-xl text-5xl font-semibold leading-none tracking-[-0.06em] text-[#F5F3EF] sm:text-6xl lg:text-7xl">
                 {settings.tagline}
               </h1>
-              <p className="mt-4 max-w-lg text-base text-[#A5A5AA] sm:text-lg">
+              <p data-reveal className="mt-4 max-w-lg text-base text-[#A5A5AA] sm:text-lg">
                 {settings.description}
               </p>
 
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              <div data-reveal className="mt-5 flex flex-col gap-3 sm:flex-row">
                 <button
                   type="button"
                   onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
@@ -1003,7 +1006,7 @@ export function BookingApp({ view }: { view?: AppView }) {
                 </Link>
               </div>
 
-              <div className="mt-5 grid max-w-md grid-cols-2 gap-4">
+              <div data-reveal className="mt-5 grid max-w-md grid-cols-2 gap-4">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-[#A5A5AA]">Disponibilidade</p>
                   <p className="mt-2 text-xl font-semibold text-[#F5F3EF]">Hoje</p>
@@ -1016,7 +1019,7 @@ export function BookingApp({ view }: { view?: AppView }) {
               </div>
             </div>
 
-            <div className="relative min-h-0 lg:h-full">
+            <div data-reveal className="relative min-h-0 lg:h-full">
               <img
                 src="https://images.unsplash.com/photo-1517832606299-7ae9b720a186?auto=format&fit=crop&w=1200&q=80"
                 alt="Barbeiro realizando o corte e acabamento de barba"
@@ -1029,20 +1032,21 @@ export function BookingApp({ view }: { view?: AppView }) {
 
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 md:mx-0 md:max-w-none md:px-8">
         <section id="services" className="space-y-5">
-          <div className="flex items-end justify-between gap-4">
+          <div data-reveal-stagger className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-[#C6A56B]">Serviços</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-[#F5F3EF]">Precisão em cada detalhe</h2>
+              <p data-reveal className="text-xs uppercase tracking-[0.22em] text-[#C6A56B]">Serviços</p>
+              <h2 data-reveal className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-[#F5F3EF]">Precisão em cada detalhe</h2>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 min-[666px]:grid-cols-3 min-[880px]:grid-cols-4 min-[1350px]:grid-cols-5 min-[1500px]:grid-cols-6 min-[1800px]:grid-cols-7 sm:gap-5">
+          <div data-reveal-stagger className="grid grid-cols-2 gap-3 min-[666px]:grid-cols-3 min-[880px]:grid-cols-4 min-[1350px]:grid-cols-5 min-[1500px]:grid-cols-6 min-[1800px]:grid-cols-7 sm:gap-5">
             {services.map((service) => {
               const selected = selectedService?.id === service.id || bookingForm.serviceId === service.id;
               return (
                 <article
                   key={service.id}
-                  className={`group flex flex-col overflow-hidden rounded-[20px] border transition ${selected ? "border-[#C6A56B] bg-[#1B1B1F] shadow-[0_14px_48px_rgba(198,165,107,0.28)]" : "border-white/10 bg-[#141416] hover:border-white/20"}`}
+                  data-reveal
+                  className={`service-card group flex flex-col overflow-hidden rounded-[20px] border transition ${selected ? "border-[#C6A56B] bg-[#1B1B1F] shadow-[0_14px_48px_rgba(198,165,107,0.28)]" : "border-white/10 bg-[#141416] hover:border-white/20"}`}
                 >
                   <div className="relative aspect-square w-full overflow-hidden">
                     <Image
@@ -1268,7 +1272,7 @@ export function BookingApp({ view }: { view?: AppView }) {
     <div className={`min-h-screen bg-[#0B0B0C] text-[#F5F3EF] transition-[margin] duration-300 ${desktopContentOffset}`}>
       {renderHeader()}
       <main className="w-full max-w-7xl px-4 py-8 sm:px-6 md:px-8">
-        <div className="mb-6 flex flex-col gap-2">
+        <div data-reveal className="mb-6 flex flex-col gap-2">
           <Link href="/" className="mb-2 inline-flex w-fit items-center gap-2 text-sm text-[#A5A5AA] transition hover:text-[#C6A56B]">
             <ArrowRight className="h-4 w-4 rotate-180" />
             Voltar à barbearia
@@ -1278,11 +1282,11 @@ export function BookingApp({ view }: { view?: AppView }) {
           <p className="text-sm text-[#A5A5AA]">Aqui ficam os atendimentos salvos neste dispositivo.</p>
         </div>
 
-        <div className="mt-6 space-y-4">
+        <div data-reveal-stagger className="mt-6 space-y-4">
           {[...appointments]
             .sort((a, b) => `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`))
             .map((appointment) => (
-              <div key={appointment.id} className="rounded-[28px] border border-white/10 bg-[#141416] p-5">
+              <div key={appointment.id} data-reveal className="premium-card rounded-[28px] border border-white/10 bg-[#141416] p-5">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-[0.18em] text-[#C6A56B]">{appointment.serviceName}</p>
@@ -1347,7 +1351,7 @@ export function BookingApp({ view }: { view?: AppView }) {
           Voltar à barbearia
         </Link>
 
-        <div className="relative h-44 w-full overflow-hidden rounded-2xl border border-white/10 sm:h-56 sm:rounded-3xl md:h-64">
+        <div data-reveal className="relative h-44 w-full overflow-hidden rounded-2xl border border-white/10 sm:h-56 sm:rounded-3xl md:h-64">
           <img
             src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=2200&q=85"
             alt="Interior de uma barbearia"
@@ -1361,7 +1365,7 @@ export function BookingApp({ view }: { view?: AppView }) {
         </div>
 
         <section className="mx-auto mt-7 w-full max-w-md">
-          <div className="mb-6 flex flex-col items-center text-center">
+          <div data-reveal className="mb-6 flex flex-col items-center text-center">
             <span className="relative mb-3 h-16 w-16 overflow-hidden rounded-full border-2 border-[#C6A56B]/70 bg-[#141416] shadow-[0_0_28px_rgba(198,165,107,0.14)]">
               <Image src="/img/logo-barbearia.jpg" alt={`Logo ${settings.businessName}`} fill sizes="64px" className="object-cover" />
             </span>
@@ -1372,7 +1376,7 @@ export function BookingApp({ view }: { view?: AppView }) {
             </p>
           </div>
 
-          <div className="space-y-5 rounded-2xl border border-white/10 bg-[#141416] p-5 shadow-2xl sm:rounded-3xl sm:p-7">
+          <div data-reveal className="space-y-5 rounded-2xl border border-white/10 bg-[#141416] p-5 shadow-2xl sm:rounded-3xl sm:p-7">
             <label className="block space-y-2 text-sm text-[#A5A5AA]">
               <span>Usuário</span>
               <input
@@ -1493,7 +1497,7 @@ export function BookingApp({ view }: { view?: AppView }) {
       <div className={`min-h-screen bg-[#0B0B0C] pb-24 text-[#F5F3EF] transition-[margin] duration-300 md:pb-8 ${desktopContentOffset}`}>
         {renderHeader()}
         <main className="w-full max-w-7xl px-4 py-5 sm:px-6 md:px-8 md:py-8">
-          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div data-reveal className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <Link href="/" className="mb-2 inline-flex items-center gap-2 text-sm text-[#A5A5AA] transition hover:text-[#C6A56B]">
                 <ArrowRight className="h-4 w-4 rotate-180" />
@@ -1517,7 +1521,7 @@ export function BookingApp({ view }: { view?: AppView }) {
 
           {adminSection === "agenda" && (
             <>
-              <div className="mb-5 grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-5">
+              <div data-reveal-stagger className="mb-5 grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-5">
                 {[
                   { label: "Hoje", value: todayAppointments.length, icon: CalendarCheck2, tint: "text-[#C6A56B]" },
                   { label: "Próximos", value: upcomingAppointments.length, icon: Clock3, tint: "text-[#F5F3EF]" },
@@ -1525,7 +1529,7 @@ export function BookingApp({ view }: { view?: AppView }) {
                   { label: "Cancelados", value: cancelledAppointments.length, icon: X, tint: "text-[#FE5F5F]" },
                   { label: "Faturado hoje", value: formatMoney(todayRevenue), icon: CircleDollarSign, tint: "text-[#C6A56B]" },
                 ].map(({ label, value, icon: Icon, tint }) => (
-                  <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#141416] p-3 sm:rounded-[22px] sm:p-4">
+                  <div key={label} data-reveal className="premium-card min-w-0 rounded-2xl border border-white/10 bg-[#141416] p-3 sm:rounded-[22px] sm:p-4">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-[#A5A5AA] sm:text-xs">{label}</p>
                       <Icon className={`h-4 w-4 shrink-0 ${tint}`} />
@@ -1534,7 +1538,7 @@ export function BookingApp({ view }: { view?: AppView }) {
                   </div>
                 ))}
               </div>
-              <section className="rounded-2xl border border-white/10 bg-[#141416] p-3 sm:rounded-[26px] sm:p-5">
+              <section data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-3 sm:rounded-[26px] sm:p-5">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="text-lg font-semibold text-[#F5F3EF] sm:text-xl">Agenda diária</h2>
@@ -1602,9 +1606,9 @@ export function BookingApp({ view }: { view?: AppView }) {
                   </label>
                 </div>
                 <p className="mb-3 text-xs text-[#A5A5AA]">{adminFilteredAppointments.length} agendamentos encontrados</p>
-                <div className="space-y-2">
+                <div data-reveal-stagger className="space-y-2">
                   {adminFilteredAppointments.map((appointment) => (
-                    <article key={appointment.id} className="rounded-xl border border-white/10 bg-[#0B0B0C] p-3 sm:rounded-2xl sm:p-4">
+                    <article key={appointment.id} data-reveal className="premium-card rounded-xl border border-white/10 bg-[#0B0B0C] p-3 sm:rounded-2xl sm:p-4">
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div className="min-w-0">
                           <p className="font-semibold text-[#F5F3EF]">{appointment.customerName}</p>
@@ -1631,9 +1635,9 @@ export function BookingApp({ view }: { view?: AppView }) {
                     <p className="mt-1 text-xs text-[#A5A5AA]">Atualize preço, duração e disponibilidade.</p>
                   </div>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div data-reveal-stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {services.map((service) => (
-                    <article key={service.id} className="rounded-2xl border border-white/10 bg-[#141416] p-4">
+                    <article key={service.id} data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4">
                       <div className="mb-3 flex items-center justify-between gap-2">
                         <h3 className="font-semibold text-[#F5F3EF]">{service.name}</h3>
                         <label className="flex items-center gap-2 text-xs text-[#A5A5AA]">
@@ -1659,7 +1663,7 @@ export function BookingApp({ view }: { view?: AppView }) {
 
           {adminSection === "settings" && (
             <section className="space-y-4">
-              <div className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
+              <div data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
                 <div className="mb-4 flex items-center gap-2"><Building2 className="h-4 w-4 text-[#C6A56B]" /><h2 className="text-lg font-semibold">Dados da barbearia</h2></div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <label className="space-y-1.5 text-sm text-[#A5A5AA]">Nome
@@ -1674,16 +1678,16 @@ export function BookingApp({ view }: { view?: AppView }) {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
+              <div data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
                 <div className="mb-4">
                   <h2 className="text-lg font-semibold">Horários de funcionamento</h2>
                   <p className="mt-1 text-xs text-[#A5A5AA]">Marque os dias fechados ou ajuste abertura e fechamento.</p>
                 </div>
-                <div className="space-y-2">
+                <div data-reveal-stagger className="space-y-2">
                   {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as WeekdayKey[]).map((day) => {
                     const hours = adminSettings.workingHours[day];
                     return (
-                      <div key={day} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 rounded-xl border border-white/5 bg-[#0B0B0C] p-2.5 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] sm:gap-3 sm:p-3">
+                      <div key={day} data-reveal className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 rounded-xl border border-white/5 bg-[#0B0B0C] p-2.5 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] sm:gap-3 sm:p-3">
                         <span className="text-sm font-medium text-[#F5F3EF]">{weekdayLabels[day]}</span>
                         {hours.closed ? (
                           <span className="col-span-2 text-center text-xs text-[#A5A5AA]">Fechado</span>
@@ -1707,7 +1711,7 @@ export function BookingApp({ view }: { view?: AppView }) {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
+              <div data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
                 <h2 className="mb-4 text-lg font-semibold">Intervalo</h2>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <label className="text-sm text-[#A5A5AA]">Início do intervalo
@@ -1724,20 +1728,20 @@ export function BookingApp({ view }: { view?: AppView }) {
 
           {adminSection === "analytics" && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-4">
+              <div data-reveal-stagger className="grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-4">
                 {[
                   { label: "Faturamento total", value: formatMoney(appointments.filter((appointment) => appointment.status !== "cancelled").reduce((total, appointment) => total + appointment.price, 0)), icon: CircleDollarSign },
                   { label: "Atendimentos concluídos", value: completedAppointments.length, icon: CheckCheck },
                   { label: "Cancelamentos", value: cancelledAppointments.length, icon: X },
                   { label: "Taxa de conclusão", value: `${appointments.length ? Math.round((completedAppointments.length / appointments.length) * 100) : 0}%`, icon: ChartNoAxesCombined },
                 ].map(({ label, value, icon: Icon }) => (
-                  <div key={label} className="rounded-2xl border border-white/10 bg-[#141416] p-3 sm:rounded-[22px] sm:p-4">
+                  <div key={label} data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-3 sm:rounded-[22px] sm:p-4">
                     <div className="flex items-center justify-between gap-2"><p className="text-[10px] uppercase tracking-wider text-[#A5A5AA] sm:text-xs">{label}</p><Icon className="h-4 w-4 shrink-0 text-[#C6A56B]" /></div>
                     <p className="mt-2 truncate text-lg font-semibold text-[#F5F3EF] sm:text-2xl">{value}</p>
                   </div>
                 ))}
               </div>
-              <section className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
+              <section data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
                 <div className="mb-5">
                   <h2 className="text-lg font-semibold">Faturamento por mês</h2>
                   <p className="mt-1 text-xs text-[#A5A5AA]">Estimativa com base nos agendamentos não cancelados.</p>
@@ -1760,7 +1764,7 @@ export function BookingApp({ view }: { view?: AppView }) {
                 </div>
               </section>
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
-                <section className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
+                <section data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
                   <h2 className="text-lg font-semibold">Status dos atendimentos</h2>
                   <div className="mt-5 flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
                     <div className="relative h-36 w-36 shrink-0 rounded-full" style={{ background: statusGradient }}>
@@ -1779,7 +1783,7 @@ export function BookingApp({ view }: { view?: AppView }) {
                     </div>
                   </div>
                 </section>
-                <section className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
+                <section data-reveal className="rounded-2xl border border-white/10 bg-[#141416] p-4 sm:rounded-[26px] sm:p-5">
                   <h2 className="text-lg font-semibold">Volume de atendimentos</h2>
                   <p className="mt-1 text-xs text-[#A5A5AA]">Comparativo mensal dos últimos seis meses.</p>
                   <div className="mt-5 grid h-40 grid-cols-6 items-end gap-2 border-b border-white/10 pb-2 sm:h-48 sm:gap-4">
